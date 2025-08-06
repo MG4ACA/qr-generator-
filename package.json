@@ -1,0 +1,65 @@
+{
+  "name": "qr-code-generator",
+  "version": "1.0.0",
+  "description": "A Windows desktop application to generate QR codes from URLs",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "build": "electron-builder",
+    "build-win": "electron-builder --win",
+    "dist": "npm run build-win",
+    "package-win": "electron-packager . QR-Code-Generator --platform=win32 --arch=x64 --out=dist --overwrite --icon=assets/\"lumicore icon.png\"",
+    "package-and-zip": "npm run package-win && cd dist && powershell -ExecutionPolicy Bypass -File create-distribution.ps1"
+  },
+  "keywords": [
+    "electron",
+    "qr-code",
+    "generator",
+    "windows"
+  ],
+  "author": "Your Name",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^27.0.0",
+    "electron-builder": "^24.6.4",
+    "electron-packager": "^17.1.2",
+    "png-to-ico": "^2.1.8",
+    "to-ico": "^1.1.5"
+  },
+  "dependencies": {
+    "qrcode": "^1.5.3"
+  },
+  "build": {
+    "appId": "com.yourcompany.qr-generator",
+    "productName": "QR Code Generator",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "**/*",
+      "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}",
+      "!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples}",
+      "!**/node_modules/*.d.ts",
+      "!**/node_modules/.bin",
+      "!**/*.{iml,o,hprof,orig,pyc,pyo,rbc,swp,csproj,sln,xproj}",
+      "!.editorconfig",
+      "!**/._*",
+      "!**/{.DS_Store,.git,.hg,.svn,CVS,RCS,SCCS,.gitignore,.gitattributes}",
+      "!**/{__pycache__,thumbs.db,.flowconfig,.idea,.vs,.nyc_output}",
+      "!**/{appveyor.yml,.travis.yml,circle.yml}",
+      "!**/{npm-debug.log,yarn.lock,.yarn-integrity,.yarn-metadata.json}"
+    ],
+    "win": {
+      "target": "portable",
+      "requestedExecutionLevel": "asInvoker",
+      "signAndEditExecutable": false,
+      "signDlls": false,
+      "icon": "assets/lumicore icon.png"
+    },
+    "portable": {
+      "artifactName": "${productName}-${version}-portable.exe"
+    },
+    "forceCodeSigning": false
+  }
+}
