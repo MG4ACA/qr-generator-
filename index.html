@@ -1,25 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>QR Code Generator</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+          Cantarell, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
 
         .container {
             background: white;
@@ -27,107 +28,82 @@
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
             padding: 40px;
             width: 100%;
-            max-width: 600px;
+            max-width: 1000px; /* Increased from 600px to accommodate side-by-side layout */
             text-align: center;
-        }
+        }      .header {
+        margin-bottom: 30px;
+      }
 
-        .header {
-            margin-bottom: 30px;
-        }
+      .header h1 {
+        color: #333;
+        font-size: 2.5em;
+        font-weight: 700;
+        margin-bottom: 10px;
+      }
 
-        .header h1 {
-            color: #333;
-            font-size: 2.5em;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
+      .header p {
+        color: #666;
+        font-size: 1.1em;
+      }
 
-        .header p {
-            color: #666;
-            font-size: 1.1em;
-        }
+      /* Tabs Styling */
+      .tabs {
+        display: flex;
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e1e5e9;
+      }
 
-        .form-group {
-            margin-bottom: 25px;
-            text-align: left;
-        }
+      .tab-btn {
+        flex: 1;
+        padding: 15px 20px;
+        border: none;
+        background: transparent;
+        font-size: 1.1em;
+        font-weight: 600;
+        color: #666;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border-bottom: 3px solid transparent;
+      }
 
-        label {
+      .tab-btn:hover {
+        color: #333;
+        background: #f8f9fa;
+      }
+
+      .tab-btn.active {
+        color: #667eea;
+        border-bottom-color: #667eea;
+        background: #f8f9fa;
+      }
+
+      .tab-content {
+        display: none;
+      }
+
+        .tab-content.active {
             display: block;
-            color: #333;
-            font-weight: 600;
-            margin-bottom: 8px;
-            font-size: 1.1em;
         }
 
-        .input-container {
-            position: relative;
-        }
-
-        input[type="url"] {
-            width: 100%;
-            padding: 15px 20px;
-            border: 2px solid #e1e5e9;
-            border-radius: 12px;
-            font-size: 1.1em;
-            transition: all 0.3s ease;
-            background: #f8f9fa;
-        }
-
-        input[type="url"]:focus {
-            outline: none;
-            border-color: #667eea;
-            background: white;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        .size-selector {
+        /* Tab Content Container Layout */
+        .tab-content-container {
             display: flex;
-            gap: 10px;
-            align-items: center;
-            margin-top: 10px;
+            gap: 30px;
+            align-items: flex-start;
         }
 
-        .size-selector select {
-            padding: 10px 15px;
-            border: 2px solid #e1e5e9;
-            border-radius: 8px;
-            font-size: 1em;
-            background: #f8f9fa;
-            cursor: pointer;
+        .tab-content {
+            flex: 1;
+            min-width: 0; /* Allows flex items to shrink below content size */
         }
 
-        .generate-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            border-radius: 12px;
-            font-size: 1.2em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin: 20px 0;
-            width: 100%;
-        }
-
-        .generate-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
-        }
-
-        .generate-btn:active {
-            transform: translateY(0);
-        }
-
-        .generate-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
+        .tab-content.active {
+            display: block;
         }
 
         .qr-container {
-            margin: 30px 0;
+            flex: 1;
+            margin: 0; /* Remove vertical margin since we're using flex gap */
             padding: 30px;
             background: #f8f9fa;
             border-radius: 15px;
@@ -137,145 +113,313 @@
             align-items: center;
             justify-content: center;
             flex-direction: column;
-        }
+        }      /* File Input Styling */
+      .file-input-container {
+        margin-bottom: 15px;
+      }
 
-        .qr-container.has-qr {
-            background: white;
-            border: 2px solid #e1e5e9;
-        }
+      .file-btn {
+        background: #f8f9fa;
+        border: 2px dashed #667eea;
+        color: #667eea;
+        padding: 15px 25px;
+        border-radius: 12px;
+        font-size: 1.1em;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 100%;
+      }
 
-        #qr-code {
-            max-width: 100%;
-            height: auto;
-        }
+      .file-btn:hover {
+        background: #667eea;
+        color: white;
+      }
 
-        .placeholder {
-            color: #999;
-            font-size: 1.1em;
-        }
+      .file-info {
+        margin-top: 10px;
+        padding: 10px;
+        background: #e8f5e8;
+        border-radius: 8px;
+        color: #155724;
+        font-size: 0.9em;
+        display: none;
+      }
 
-        .actions {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            margin-top: 20px;
-        }
+      .file-info.show {
+        display: block;
+      }
 
-        .btn {
-            padding: 12px 25px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
+      .image-preview {
+        margin: 15px 0;
+        text-align: center;
+      }
 
-        .btn-save {
-            background: #28a745;
-            color: white;
-        }
+      .image-preview img {
+        max-width: 200px;
+        max-height: 200px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
 
-        .btn-save:hover {
-            background: #218838;
-            transform: translateY(-1px);
-        }
+      .form-group {
+        margin-bottom: 25px;
+        text-align: left;
+      }
 
-        .btn-clear {
-            background: #6c757d;
-            color: white;
-        }
+      label {
+        display: block;
+        color: #333;
+        font-weight: 600;
+        margin-bottom: 8px;
+        font-size: 1.1em;
+      }
 
-        .btn-clear:hover {
-            background: #5a6268;
-            transform: translateY(-1px);
-        }
+      .input-container {
+        position: relative;
+      }
 
-        .btn:disabled {
+      input[type="url"] {
+        width: 100%;
+        padding: 15px 20px;
+        border: 2px solid #e1e5e9;
+        border-radius: 12px;
+        font-size: 1.1em;
+        transition: all 0.3s ease;
+        background: #f8f9fa;
+      }
+
+      input[type="url"]:focus {
+        outline: none;
+        border-color: #667eea;
+        background: white;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      }
+
+      .size-selector {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        margin-top: 10px;
+      }
+
+      .size-selector select {
+        padding: 10px 15px;
+        border: 2px solid #e1e5e9;
+        border-radius: 8px;
+        font-size: 1em;
+        background: #f8f9fa;
+        cursor: pointer;
+      }
+
+      .generate-btn {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 15px 40px;
+        border-radius: 12px;
+        font-size: 1.2em;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin: 20px 0;
+        width: 100%;
+      }
+
+      .generate-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+      }
+
+      .generate-btn:active {
+        transform: translateY(0);
+      }
+
+        .generate-btn:disabled {
             opacity: 0.6;
             cursor: not-allowed;
             transform: none;
         }
 
-        .error {
-            color: #dc3545;
-            font-size: 0.9em;
-            margin-top: 5px;
-            text-align: center;
+        .qr-container.has-qr {
+            background: white;
+            border: 2px solid #e1e5e9;
+        }      #qr-code {
+        max-width: 100%;
+        height: auto;
+      }
+
+      .placeholder {
+        color: #999;
+        font-size: 1.1em;
+      }
+
+      .actions {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        margin-top: 20px;
+      }
+
+      .btn {
+        padding: 12px 25px;
+        border: none;
+        border-radius: 8px;
+        font-size: 1em;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .btn-save {
+        background: #28a745;
+        color: white;
+      }
+
+      .btn-save:hover {
+        background: #218838;
+        transform: translateY(-1px);
+      }
+
+      .btn-clear {
+        background: #6c757d;
+        color: white;
+      }
+
+      .btn-clear:hover {
+        background: #5a6268;
+        transform: translateY(-1px);
+      }
+
+      .btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .error {
+        color: #dc3545;
+        font-size: 0.9em;
+        margin-top: 5px;
+        text-align: center;
+      }
+
+      .success {
+        color: #28a745;
+        font-size: 0.9em;
+        margin-top: 5px;
+        text-align: center;
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          padding: 20px;
+          margin: 10px;
         }
 
-        .success {
-            color: #28a745;
-            font-size: 0.9em;
-            margin-top: 5px;
-            text-align: center;
+        .header h1 {
+          font-size: 2em;
         }
 
-        @media (max-width: 768px) {
-            .container {
-                padding: 20px;
-                margin: 10px;
-            }
-            
-            .header h1 {
-                font-size: 2em;
-            }
-            
-            .actions {
-                flex-direction: column;
-            }
+        .actions {
+          flex-direction: column;
         }
+
+        /* Stack tab content vertically on mobile */
+        .tab-content-container {
+          flex-direction: column;
+          gap: 20px;
+        }
+
+        .qr-container {
+          margin: 20px 0; /* Add back margin on mobile */
+        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <div class="header">
-            <h1>🔗 QR Code Generator</h1>
-            <p>Generate QR codes from URLs instantly</p>
-        </div>
+      <div class="header">
+        <h1>🔗 QR Code Generator</h1>
+        <p>Generate QR codes from URLs or images instantly</p>
+      </div>
 
-        <form id="qr-form">
+      <!-- Tab Navigation -->
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="url">🔗 URL to QR</button>
+        <button class="tab-btn" data-tab="image">🖼️ Image to QR</button>
+      </div>
+
+      <!-- URL Tab Content -->
+      <div class="tab-content-container">
+        <div class="tab-content active" id="url-tab">
+          <form id="qr-form">
             <div class="form-group">
-                <label for="url-input">Enter URL:</label>
-                <div class="input-container">
-                    <input 
-                        type="url" 
-                        id="url-input" 
-                        placeholder="https://example.com"
-                        required
-                    >
-                </div>
-                <div class="size-selector">
-                    <label for="size-select">Size:</label>
-                    <select id="size-select">
-                        <option value="200">Small (200x200)</option>
-                        <option value="300" selected>Medium (300x300)</option>
-                        <option value="400">Large (400x400)</option>
-                        <option value="500">Extra Large (500x500)</option>
-                    </select>
-                </div>
+              <label for="url-input">Enter URL:</label>
+              <div class="input-container">
+                <input type="url" id="url-input" placeholder="https://example.com" required />
+              </div>
+              <div class="size-selector">
+                <label for="size-select">Size:</label>
+                <select id="size-select">
+                  <option value="200">Small (200x200)</option>
+                  <option value="300" selected>Medium (300x300)</option>
+                  <option value="400">Large (400x400)</option>
+                  <option value="500">Extra Large (500x500)</option>
+                </select>
+              </div>
             </div>
 
-            <button type="submit" class="generate-btn" id="generate-btn">
-                Generate QR Code
+            <button type="submit" class="generate-btn" id="generate-btn">Generate QR Code</button>
+          </form>
+        </div>
+
+        <!-- Image Tab Content -->
+        <div class="tab-content" id="image-tab">
+          <form id="image-form">
+            <div class="form-group">
+              <label for="image-input">Select Image:</label>
+              <div class="file-input-container">
+                <input type="file" id="image-input" accept="image/*" style="display: none" />
+                <button type="button" class="file-btn" id="select-file-btn">
+                  📁 Choose Image File
+                </button>
+                <div class="file-info" id="file-info"></div>
+              </div>
+              <div class="image-preview" id="image-preview"></div>
+              <div class="size-selector">
+                <label for="image-size-select">QR Code Size:</label>
+                <select id="image-size-select">
+                  <option value="200">Small (200x200)</option>
+                  <option value="300" selected>Medium (300x300)</option>
+                  <option value="400">Large (400x400)</option>
+                  <option value="500">Extra Large (500x500)</option>
+                </select>
+              </div>
+            </div>
+
+            <button type="submit" class="generate-btn" id="generate-image-btn" disabled>
+              Generate QR Code from Image
             </button>
-        </form>
+          </form>
+        </div>
 
         <div class="qr-container" id="qr-container">
-            <div class="placeholder" id="placeholder">
-                📱 Enter a URL above and click "Generate QR Code"
-            </div>
-            <canvas id="qr-code" style="display: none;"></canvas>
+          <div class="placeholder" id="placeholder">
+            📱 Choose a tab above and generate your QR code
+          </div>
+          <canvas id="qr-code" style="display: none"></canvas>
         </div>
+      </div>
 
-        <div class="actions" id="actions" style="display: none;">
-            <button class="btn btn-save" id="save-btn">💾 Save QR Code</button>
-            <button class="btn btn-clear" id="clear-btn">🗑️ Clear</button>
-        </div>
+      <div class="actions" id="actions" style="display: none">
+        <button class="btn btn-save" id="save-btn">💾 Save QR Code</button>
+        <button class="btn btn-clear" id="clear-btn">🗑️ Clear</button>
+      </div>
 
-        <div id="message"></div>
+      <div id="message"></div>
     </div>
 
     <script src="renderer.js"></script>
-</body>
+  </body>
 </html>
