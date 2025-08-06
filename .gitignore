@@ -23,4 +23,7 @@ logs
 .env.*
 !.env.example
 
+# Temporary files
+convert-icon.js
+
 /app/generated/prisma

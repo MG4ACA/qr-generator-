@@ -9,7 +9,7 @@
     "build": "electron-builder",
     "build-win": "electron-builder --win",
     "dist": "npm run build-win",
-    "package-win": "electron-packager . QR-Code-Generator --platform=win32 --arch=x64 --out=dist --overwrite --icon=assets/\"lumicore icon.png\"",
+    "package-win": "electron-packager . QR-Code-Generator --platform=win32 --arch=x64 --out=dist --overwrite --icon=\"assets/lumicore icon.ico\"",
     "package-and-zip": "npm run package-win && cd dist && powershell -ExecutionPolicy Bypass -File create-distribution.ps1"
   },
   "keywords": [
@@ -28,6 +28,7 @@
     "to-ico": "^1.1.5"
   },
   "dependencies": {
+    "assert-plus": "^1.0.0",
     "qrcode": "^1.5.3"
   },
   "build": {
